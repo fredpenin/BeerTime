@@ -4,39 +4,40 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+// pour l'utilisation de ll'objet réponse :
 use Symfony\Component\HttpFoundation\Response;
+// appel de ma classe EventService :
+use App\Service\EventService;
+
 
 class EventController extends AbstractController
 {
+    private $events;
+
     /**
      * @Route("/event", name="event_list")
      */
-    public function list(  )
-    {
-        // return new Response("liste des évenements");
-
-        $title = "Liste des Events";
+    public function list(EventService $EventService)
+    { 
         return $this->render('event/list.html.twig', [
-            'title' => $title,
+            'events' => $EventService->getAll()
         ]);
     }
 
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
      */
-    public function show( $id )
+    public function show(EventService $EventService, $id)
     {
-        // return new Response("un évenement");
-        $title = "Evenement";
-        return $this->render('event/single.html.twig', [
-            'title' => $title,
+        return $this->render('event/show.html.twig', [
+            'event' => $EventService->getOne($id)
         ]);
     }
 
     /**
      * @Route("/event/new", name="add")
      */
-    public function add(  )
+    public function add(EventService $EventService)
     {
         return new Response("ajouter un evt");
     }
@@ -44,7 +45,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/{id}/join", name="event_join", requirements={"id"="\d+"})
      */
-    public function join( $id )
+    public function join(EventService $EventService)
     {
         return new Response("Rejoindre un évenement");
     }
