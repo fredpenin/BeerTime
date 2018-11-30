@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 // appel de ma classe EventService :
 use App\Service\EventService;
 
+use App\Entity\Event;
+
 
 class EventController extends AbstractController
 {
@@ -16,13 +18,14 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event", name="event_list")
-     */
+     */ 
     public function list(EventService $EventService)
     { 
         return $this->render('event/list.html.twig', [
             'events' => $EventService->getAll()
         ]);
     }
+
 
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})

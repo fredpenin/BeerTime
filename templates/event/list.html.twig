@@ -12,29 +12,27 @@
     <h3></h3>
 </div>
 
-    {% for event in events %}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src={{event.poster}} alt="BearsBeer image">
-            <div class="card-body">
-                <h5 class="card-title">Titre : {{event.name}}</h5>
-                <p class="card-text">Description : {{event.Description}}</p>
-                <a href="{{ path('event_show', {id: event.id}) }}">Voir plus</a>
-                {% if date(event.startTime) <= date() and date(event.endTime) >= date() %}
-                    <p>en cours</p>
-                {% elseif date(event.endTime) < date() %}
-                    <p>passé</p>
-                {% else %}
-                    <p>futur</p>
-                {% endif %}
-
-
+<div class="container">
+    <div class="row">
+        {% for event in events %}
+            <div class="card col-12 col-sm-4" style="width: 18rem;">
+                <img class="card-img-top" src={{event.poster}} alt="BearsBeer image">
+                <div class="card-body">
+                    <h5 class="card-title">Titre : {{event.name}}</h5>
+                    <p class="card-text">Description : {{event.content}}</p>
+                    <a href="{{ path('event_show', {id: event.id}) }}">Voir plus</a>
+                    {% if date(event.startAt | date()) <= date() and date(event.endAt | date()) >= date() %}
+                        <p>en cours</p>
+                    {% elseif date(event.endAt) < date() %}
+                        <p>passé</p>
+                    {% else %}
+                        <p>futur</p>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-
-    {% endfor %}
-
-
-
+        {% endfor %}
+    </div>
+</div>
    
 
 {% endblock %}
