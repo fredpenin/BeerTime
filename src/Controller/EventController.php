@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Service\EventService;
 
 use App\Entity\Event;
-
+// pour paginer la liste des events
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class EventController extends AbstractController
 {

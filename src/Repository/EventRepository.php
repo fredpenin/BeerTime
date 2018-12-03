@@ -47,21 +47,6 @@ class EventRepository extends ServiceEntityRepository
     }
 
 
-    // fonction de tri par nom
-    public function sortByName(){
-        return $this->createQueryBuilder('e')
-            ->orderBy('e.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    // fonction de tri par date
-    public function sortByDate(){
-        return $this->createQueryBuilder('e')
-            ->orderBy('e.startAt', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
 
 
     // /**
