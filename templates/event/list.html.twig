@@ -12,7 +12,13 @@
     <h3></h3>
 </div>
 
-<div class="container">
+<form>
+    <label for="byName">Trier par noms</label>
+        <input type="radio" name="byName" checked>
+    <label for="byDate">Trier par date</label>
+        <input type="radio" name="byDate">
+</form>
+<div class="container-fluid">
     <div class="row">
         {% for event in events %}
             <div class="card col-12 col-sm-4" style="width: 18rem;">
@@ -32,8 +38,7 @@
             </div>
         {% endfor %}
     </div>
-</div>
-   
+</div>   
 
 {% endblock %}
 

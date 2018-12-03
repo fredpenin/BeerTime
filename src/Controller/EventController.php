@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 // pour l'utilisation de ll'objet réponse :
 use Symfony\Component\HttpFoundation\Response;
+//pour pouvoir faire des requêtes pr le moteur de recherche :
+use Symfony\Component\HttpFoundation\Request;
+
 // appel de ma classe EventService :
 use App\Service\EventService;
 
@@ -19,11 +22,27 @@ class EventController extends AbstractController
     /**
      * @Route("/event", name="event_list")
      */ 
-    public function list(EventService $EventService)
+    // Liste des events si recherche vide; sinon liste des events correspondant à la recherche
+    public function list(Request $request, EventService $EventService)
     { 
-        return $this->render('event/list.html.twig', [
-            'events' => $EventService->getAll()
-        ]);
+        $querySearch = $request->query->get('querySearch');
+        return $this->render('event/list.html.twig', 
+            ['events' => $EventService->search($querySearch),
+            'incomingEvent' => $EventService->countIncoming()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/event", name="event_search")
+     */ 
+    public function search(EventService $EventService)
+    { 
+        return $this->render('event/list.html.twig', 
+            ['events' => $EventService->search($searchTerm),
+            'incomingEvent' => $EventService->countIncoming()
+            ]
+        );
     }
 
 
@@ -52,5 +71,7 @@ class EventController extends AbstractController
     {
         return new Response("Rejoindre un évenement");
     }
+
+
     
 }

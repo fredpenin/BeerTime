@@ -29,10 +29,24 @@ class EventService
         return $repo->find($id);
     }
 
-    // Affiche la liste des évenements pas nom
-    public function getByName($name){
+    // Recherche des évenements pas nom
+    public function search($name){
         $repo = $this->om->getRepository(Event::class);
-        return $repo->findOneByName($name);
+        return $repo->search($name);
+    }
+
+    // Recherche du nombre d'évenements à venir
+    public function countIncoming(){
+        $repo = $this->om->getRepository(Event::class);
+        return $repo->countIncoming();
+    }
+
+    public function sortByName(){
+
+    }
+
+    public function sortByDate(){
+        
     }
 
 }

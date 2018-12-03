@@ -9,13 +9,34 @@
         {% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">BeerTime</a>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('accueil') }}">Accueil <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('event_list') }}">Liste des évenements</a>
+                    </li>
+                </ul>
+
+                <form method="GET" action="{{ path('event_list') }}" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" name="querySearch" type="search" placeholder="Rechercher un évenement" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </nav>
+
+    
         <h2>Bienvenue sur BeerTime</h2>
         <h7>Référencement des évenements de rencontre autour d'une bière</h7>
         <hr />
-        <ul>
-            <li><a href="{{ path('accueil') }}">Accueil</a></li>
-            <li><a href="{{ path('event_list') }}">Liste des évenements</a></li>
-        </ul>
+
 
 
         {% block body %}{% endblock %}

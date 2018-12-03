@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Event
 {
+    /////////////////////////////////////////////////
+    //////////////// PROPRIETES /////////////////////
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -22,8 +24,6 @@ class Event
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-
-
 
     /**
      * @ORM\Column(type="datetime")
@@ -77,6 +77,9 @@ class Event
      */
     private $participations;
 
+    
+    /////////////////////////////////////////////////
+    ////////////////// METHODES /////////////////////
     public function __construct()
     {
         $this->categories = new ArrayCollection();
