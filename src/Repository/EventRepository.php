@@ -20,13 +20,21 @@ class EventRepository extends ServiceEntityRepository
     }
 
     // fonction de recherche par nom. Placée ici plutôt que dans le service afin qu'elle soit réutilisable dans plusieurs services
-    public function search(?string $name){
-        return $this->createQueryBuilder('e')// e devenant un alias de la table Event
-            ->andWhere('e.name LIKE :bind')
-            ->setParameter(':bind', '%' . $name . '%')
-            ->getQuery()
+    public function search(?string $name, $sort){
+    
+        $stmt = $this->createQueryBuilder('e');// e devenant un alias de la table Event
+        $stmt->andWhere('e.name LIKE :bind')
+            ->setParameter(':bind', '%' . $name . '%');
+        if($sort == "price"){
+            $stmt->orderBy('e.price', 'ASC');
+        }elseif($sort == "date"){
+            $stmt->orderBy('e.createdAt', 'DESC');
+        }
+
+        return $stmt->getQuery()
             ->getResult();
     }
+    //un "statement" (stmt) est une requete qu'on est entrain de préparer; on stoque donc ds une variable plutot que de retourner le résultat tt de suite
 
     // fonction de comptage des events à venir
     public function countIncoming(){
@@ -37,6 +45,7 @@ class EventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
 
     // fonction de tri par nom
     public function sortByName(){

@@ -29,10 +29,10 @@ class EventService
         return $repo->find($id);
     }
 
-    // Recherche des évenements pas nom
-    public function search($name){
+    // Recherche des évenements pas nom et par tri (date ou nom)
+    public function search($name, $sort){
         $repo = $this->om->getRepository(Event::class);
-        return $repo->search($name);
+        return $repo->search($name, $sort);
     }
 
     // Recherche du nombre d'évenements à venir
@@ -46,7 +46,7 @@ class EventService
     }
 
     public function sortByDate(){
-        
+
     }
 
 }

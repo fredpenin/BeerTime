@@ -11,13 +11,9 @@
 <div class="example-wrapper">
     <h3></h3>
 </div>
+<a href="?sort=price">Trier par prix</a>
+<a href="?sort=date">Trier par date</a>
 
-<form>
-    <label for="byName">Trier par noms</label>
-        <input type="radio" name="byName" checked>
-    <label for="byDate">Trier par date</label>
-        <input type="radio" name="byDate">
-</form>
 <div class="container-fluid">
     <div class="row">
         {% for event in events %}

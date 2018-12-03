@@ -25,26 +25,14 @@ class EventController extends AbstractController
     // Liste des events si recherche vide; sinon liste des events correspondant à la recherche
     public function list(Request $request, EventService $EventService)
     { 
+        $querySort = $request->query->get('sort');
         $querySearch = $request->query->get('querySearch');
         return $this->render('event/list.html.twig', 
-            ['events' => $EventService->search($querySearch),
+            ['events' => $EventService->search($querySearch, $querySort),
             'incomingEvent' => $EventService->countIncoming()
             ]
         );
     }
-
-    /**
-     * @Route("/event", name="event_search")
-     */ 
-    public function search(EventService $EventService)
-    { 
-        return $this->render('event/list.html.twig', 
-            ['events' => $EventService->search($searchTerm),
-            'incomingEvent' => $EventService->countIncoming()
-            ]
-        );
-    }
-
 
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
