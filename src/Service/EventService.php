@@ -41,4 +41,9 @@ class EventService
         return $repo->countIncoming();
     }
 
+    // Création d'un évenement
+    public function add(){
+        
+    }
+
 }

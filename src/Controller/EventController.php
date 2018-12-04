@@ -12,6 +12,8 @@ use App\Service\EventService;
 use App\Entity\Event;
 // pour paginer la liste des events
 use Doctrine\ORM\Tools\Pagination\Paginator;
+// accès au Formulaire
+use App\Form\AddEventFormType;
 
 
 class EventController extends AbstractController
@@ -53,11 +55,25 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/event/new", name="add")
+     * @Route("/event/new", name="event_add")
      */
-    public function add(EventService $EventService)
+    public function add( Request $request )
     {
-        return new Response("ajouter un evt");
+        $event = new Event();
+        $form = $this->createForm(AddEventFormType::class, $event);
+
+        $form->handleRequest($request);
+        if ( $form->isSubmitted() && $form->isValid() ){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist( $event );
+            $em->flush();
+
+            return $this->redirectToRoute('event_list');
+        }
+
+        return $this->render('event/new.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -67,13 +83,5 @@ class EventController extends AbstractController
     {
         return new Response("Rejoindre un évenement");
     }
-
-
-    // public function addEvent(){
-    //     $event = new Event();
-    //     $form = $this->createForm(AddEventFormType::class, $event);
-
-    //     return $this->render('event/')
-    // }
  
 }
