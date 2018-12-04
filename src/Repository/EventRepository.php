@@ -20,7 +20,7 @@ class EventRepository extends ServiceEntityRepository
     }
 
     // fonction de recherche par nom. Placée ici plutôt que dans le service afin qu'elle soit réutilisable dans plusieurs services
-    public function search(?string $name, $sort){
+    public function search(?string $name, $sort, $page){
     
         $stmt = $this->createQueryBuilder('e');// e devenant un alias de la table Event
         $stmt->andWhere('e.name LIKE :bind')
@@ -30,11 +30,18 @@ class EventRepository extends ServiceEntityRepository
         }elseif($sort == "date"){
             $stmt->orderBy('e.createdAt', 'DESC');
         }
+        //pagination :a
+        $nbMaxPerPage = 2;//nb d'events par page
+        $firstResult = ($page - 1) * $nbMaxPerPage;
+        $stmt->setFirstResult($firstResult)
+             ->setMaxResults($nbMaxPerPage);
 
         return $stmt->getQuery()
             ->getResult();
+
     }
     //un "statement" (stmt) est une requete qu'on est entrain de préparer; on stoque donc ds une variable plutot que de retourner le résultat tt de suite
+
 
     // fonction de comptage des events à venir
     public function countIncoming(){
@@ -45,6 +52,7 @@ class EventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
 
 
 

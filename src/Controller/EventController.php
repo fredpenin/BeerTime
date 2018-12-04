@@ -3,17 +3,16 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-// pour l'utilisation de ll'objet réponse :
+// pour l'utilisation de l'objet réponse :
 use Symfony\Component\HttpFoundation\Response;
 //pour pouvoir faire des requêtes pr le moteur de recherche :
 use Symfony\Component\HttpFoundation\Request;
-
 // appel de ma classe EventService :
 use App\Service\EventService;
-
 use App\Entity\Event;
 // pour paginer la liste des events
 use Doctrine\ORM\Tools\Pagination\Paginator;
+
 
 class EventController extends AbstractController
 {
@@ -25,11 +24,20 @@ class EventController extends AbstractController
     // Liste des events si recherche vide; sinon liste des events correspondant à la recherche
     public function list(Request $request, EventService $EventService)
     { 
+        // pour la recherche par prix ou par date (selon que sort=price ou = date)
         $querySort = $request->query->get('sort');
+        //pour le moteur de recherche de la navBar
         $querySearch = $request->query->get('querySearch');
+        //récup du n° de page pour la pagination
+        $queryPage = $request->query->get('page');
+        if(empty($queryPage)){
+            $queryPage = 1;
+        }
+
         return $this->render('event/list.html.twig', 
-            ['events' => $EventService->search($querySearch, $querySort),
-            'incomingEvent' => $EventService->countIncoming()
+            ['events' => $EventService->search($querySearch, $querySort, $queryPage),
+            'incomingEvent' => $EventService->countIncoming(),
+            'page' => $queryPage
             ]
         );
     }
@@ -61,5 +69,11 @@ class EventController extends AbstractController
     }
 
 
-    
+    // public function addEvent(){
+    //     $event = new Event();
+    //     $form = $this->createForm(AddEventFormType::class, $event);
+
+    //     return $this->render('event/')
+    // }
+ 
 }

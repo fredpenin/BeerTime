@@ -14,7 +14,7 @@ class EventService
         $this->om = $om;
     }
 
-    // Recherche de la liste des evenements 
+    // Recherche de la liste des evenements
     public function getAll(){
         //old : 
         // $events = $this->events;
@@ -30,23 +30,15 @@ class EventService
     }
 
     // Recherche des évenements pas nom et par tri (date ou nom)
-    public function search($name, $sort){
+    public function search($name, $sort, $page){//$page reçoit le $queryPage
         $repo = $this->om->getRepository(Event::class);
-        return $repo->search($name, $sort);
+        return $repo->search($name, $sort, $page);
     }
 
     // Recherche du nombre d'évenements à venir
     public function countIncoming(){
         $repo = $this->om->getRepository(Event::class);
         return $repo->countIncoming();
-    }
-
-    public function sortByName(){
-
-    }
-
-    public function sortByDate(){
-
     }
 
 }
