@@ -39,9 +39,9 @@ class AddEventFormType extends AbstractType
                         'choice_label' => 'name',
                         'multiple' => true,
                         'expanded' => true))
-            ->add('owner', EntityType::class, array(
-                        'class' => User::class,
-                        'choice_label' => 'username'))
+            // ->add('owner', EntityType::class, array(
+            //             'class' => User::class,
+            //             'choice_label' => 'username'))
         ;
 
     }

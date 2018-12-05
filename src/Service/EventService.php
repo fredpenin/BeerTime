@@ -3,6 +3,7 @@ namespace App\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Event;
+use App\Entity\User;
 
 
 class EventService
@@ -10,7 +11,7 @@ class EventService
     // On ne peut pas appeler le use doctrine hors des controlleurs, donc on utilise l'injection de dépendance
     private $om;
 
-    public function __construct(ObjectManager $om){
+    public function __construct(ObjectManager $om){ // revient à faire un $this->getDoctrine()->getManager(); dans un contrôleur
         $this->om = $om;
     }
 
@@ -42,8 +43,12 @@ class EventService
     }
 
     // Création d'un évenement
-    public function add(){
-        
+    public function add($event){
+        $repo = $this->om->getRepository(User::class);
+        $user = $repo->find(1);
+        $event->setOwner($user);
+        $this->om->persist( $event );
+        $this->om->flush();
     }
 
 }

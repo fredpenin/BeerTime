@@ -22,7 +22,12 @@ class Event
     private $id;
 
     /**
-     * @Assert\Length(min=3)
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 30,
+     *      minMessage = "Le nom doit comprendre au moins 3 caractères",
+     *      maxMessage = "Le nom ne doit pas dépasser 30 caractères"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -33,22 +38,28 @@ class Event
     private $createdAt;
 
     /**
-     * @@Assert\GreaterThan("today")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
     private $startAt;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(propertyPath="startDate")
      * @ORM\Column(type="datetime")
      */
     private $endAt;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @Assert\Type(type="float")
+     * @Assert\GreaterThan(0)
      * @ORM\Column(type="float", nullable=true)
      */
     private $price;
@@ -93,6 +104,7 @@ class Event
         $this->categories = new ArrayCollection();
         $this->participations = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int

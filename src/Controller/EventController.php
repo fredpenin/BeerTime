@@ -53,21 +53,21 @@ class EventController extends AbstractController
     /**
      * @Route("/event/new", name="event_add")
      */
-    public function add( Request $request )
+    public function add( EventService $EventService, Request $request )
     {
         $event = new Event();
-        $event->setCreatedAt(new \DateTime()); 
+        //$event->setCreatedAt(new \DateTime()); //plûtot le mettre ds le constructeur
 
         $form = $this->createForm(AddEventFormType::class, $event);
 
         $form->handleRequest($request);
 
-        //$event->setOwner(1);
-
         if ( $form->isSubmitted() && $form->isValid() ){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist( $event );
-            $em->flush();
+            // $em = $this->getDoctrine()->getManager();
+            // $em->persist( $event );
+            // $em->flush();            
+            //On met tout ça dans le service à la place :
+            $EventService->add($event); //save de l'event
 
             return $this->redirectToRoute('event_list');
         }
@@ -75,7 +75,6 @@ class EventController extends AbstractController
         
         return $this->render('event/new.html.twig',[
             'form' => $form->createView(),
-            'dump' => dump($request)
         ]);
     }
 
