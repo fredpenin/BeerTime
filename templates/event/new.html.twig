@@ -2,12 +2,16 @@
 
 {% block title %}Hello {{ parent() }}!{% endblock %}
 
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 {% block body %}
-<h2>Ajout d'un nouvel évenement</h2>
+<h4>Ajout d'un nouvel évenement</h4>
 
 {{ form_start(form) }}
 {{ form_widget(form) }}
-<button type="submit">Ajouter</button>
+{# {{ form_row(form.createdAt = date()) }} #}
+<button type="submit" class="btn btn-success">Ajouter</button>
 {{ form_end(form) }}
+{{ dump }}
 
 {% endblock %}

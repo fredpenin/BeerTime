@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -21,6 +22,7 @@ class Event
     private $id;
 
     /**
+     * @Assert\Length(min=3)
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -31,6 +33,7 @@ class Event
     private $createdAt;
 
     /**
+     * @@Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
     private $startAt;

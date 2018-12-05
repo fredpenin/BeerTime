@@ -2,17 +2,13 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\Routing\Annotation\Route;
-// pour l'utilisation de l'objet réponse :
 use Symfony\Component\HttpFoundation\Response;
-//pour pouvoir faire des requêtes pr le moteur de recherche :
 use Symfony\Component\HttpFoundation\Request;
-// appel de ma classe EventService :
+
 use App\Service\EventService;
 use App\Entity\Event;
-// pour paginer la liste des events
-use Doctrine\ORM\Tools\Pagination\Paginator;
-// accès au Formulaire
 use App\Form\AddEventFormType;
 
 
@@ -60,9 +56,14 @@ class EventController extends AbstractController
     public function add( Request $request )
     {
         $event = new Event();
+        $event->setCreatedAt(new \DateTime()); 
+
         $form = $this->createForm(AddEventFormType::class, $event);
 
         $form->handleRequest($request);
+
+        //$event->setOwner(1);
+
         if ( $form->isSubmitted() && $form->isValid() ){
             $em = $this->getDoctrine()->getManager();
             $em->persist( $event );
@@ -71,8 +72,10 @@ class EventController extends AbstractController
             return $this->redirectToRoute('event_list');
         }
 
+        
         return $this->render('event/new.html.twig',[
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'dump' => dump($request)
         ]);
     }
 
