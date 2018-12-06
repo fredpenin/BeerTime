@@ -47,8 +47,25 @@ class EventService
         $repo = $this->om->getRepository(User::class);
         $user = $repo->find(1);
         $event->setOwner($user);
+
+        $this->setupMedia( $event );
+
         $this->om->persist( $event );
         $this->om->flush();
+    }
+
+
+    private function setupMedia($event){
+        if(!empty($event->getPosterUrl())){
+            $event->setPoster($event->getPosterUrl());
+        }
+
+        $file = $event->getPosterFile();
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+
+        $file->move('./data', $fileName);
+
+        return $event->setPoster('data/' . $fileName);
     }
 
 }

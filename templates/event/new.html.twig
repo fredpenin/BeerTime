@@ -7,7 +7,8 @@
 {% block body %}
 <h4>Ajout d'un nouvel évenement</h4>
 
-{{ form_start(form) }}
+{{ form_start(form, { 'attr': { 'novalidate': 'novalidate',
+                                'class':'text-whitem p-3' } }) }}
 {{ form_widget(form) }}
 {# {{ form_row(form.createdAt = date()) }} #}
 <button type="submit" class="btn btn-success">Ajouter</button>

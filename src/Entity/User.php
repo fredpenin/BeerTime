@@ -2,14 +2,22 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; // pour le mail unique en base
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="L'e-mail saisi est déjà utilisé."
+ * )
  */
-class User
+class User implements UserInterface // permet de déclarer cette classe comme une vrai classe utilisateur à symfony, permettant l'accès à certaines fonction d'encodage etc
+                                    //nécessite d'implémenter certaines methodes obligatoires (cf. doc sur UserInterface)
 {
     /**
      * @ORM\Id()
@@ -25,13 +33,21 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=8, minMessage="Votre mot de passe doit contenir au moins 8 caractères")
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="password", message="Le mot de passe et sa confirmation en correspondent pas")
+     */
+    public $confirm_password;
+
 
     /**
      * @ORM\Column(type="array")
@@ -89,6 +105,7 @@ class User
         return $this;
     }
 
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -100,18 +117,21 @@ class User
 
         return $this;
     }
+    //Requis pourUserInterface : Cf. https://api.symfony.com/3.4/Symfony/Component/Security/Core/User/UserInterface.html
+    public function eraseCredentials(){}
 
-    public function getRoles(): ?array
-    {
-        return $this->roles;
+    public function getSalt(){}
+
+    public function getRoles(){
+        return ['ROLE_USER'];
     }
 
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
+
 
     /**
      * @return Collection|Event[]
@@ -205,4 +225,6 @@ class User
 
         return $this;
     }
+
+
 }

@@ -2,21 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Event;
-use App\Entity\Category;
-use App\Entity\Place;
 use App\Entity\User;
+use App\Entity\Event;
+use App\Entity\Place;
+use App\Entity\Category;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 //classes utilisées
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class AddEventFormType extends AbstractType
 {
@@ -24,12 +22,13 @@ class AddEventFormType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('createdAt')//, DateType::class, array('label' => 'Date création'))
+            //->add('createdAt')
             ->add('startAt')//, DateType::class, array('label' => 'Date début'))
             ->add('endAt')//, DateType::class, array('label' => 'Date fin'))
             ->add('content')
             ->add('price')
-            ->add('poster', TextType::class, array('label' => 'Image (url)'))
+            ->add('posterUrl')
+            ->add('posterFile', FileType::class)
 
             ->add('place', EntityType::class, array(
                         'class' => Place::class,

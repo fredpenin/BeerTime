@@ -6,10 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- */
+*/
 class Event
 {
     /////////////////////////////////////////////////
@@ -46,7 +47,7 @@ class Event
 
     /**
      * @Assert\NotBlank
-     * @Assert\GreaterThan(propertyPath="startDate")
+     * @Assert\GreaterThan(propertyPath="startAt")
      * @ORM\Column(type="datetime")
      */
     private $endAt;
@@ -68,6 +69,22 @@ class Event
      * @ORM\Column(type="string", length=255)
      */
     private $poster;
+
+    /**
+     * @Assert\Url
+     * @Assert\Expression(
+     *     "this.getPosterUrl() or this.getPosterFile()",
+     *     message="Vous devez saisir une URL ou charger une image"
+     * )
+     */
+    private $posterUrl;
+
+    /**
+     * @Assert\File(maxSize = "2048k")
+     * 
+     */
+    private $posterFile;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="events")
@@ -105,6 +122,7 @@ class Event
         $this->participations = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTime();
+
     }
 
     public function getId(): ?int
@@ -193,9 +211,31 @@ class Event
     public function setPoster(string $poster): self
     {
         $this->poster = $poster;
-
         return $this;
     }
+
+    public function getPosterUrl(): ?string
+    {
+        return $this->posterUrl;
+    }
+
+    public function setPosterUrl(string $poster): self
+    {
+        $this->posterUrl = $poster;
+        return $this;
+    }
+
+    public function getPosterFile()
+    {
+        return $this->posterFile;
+    }
+
+    public function setPosterFile($poster): self
+    {
+        $this->posterFile = $poster;
+
+        return $this;
+    }    
 
     public function getPlace(): ?Place
     {

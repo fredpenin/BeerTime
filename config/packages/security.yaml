@@ -1,13 +1,36 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+
+        
+
     providers:
+        # Symfony\Component\Security\Core\User\User:  #à mettre si on utilise des users en dur, sans bdd
         in_memory: { memory: ~ }
+        in_database:
+            entity:
+                class: App\Entity\User
+                property: email #va rechercher les utilisateurs par mail, comme on l'a paramétré comme unique en db
+
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+
+            provider: in_database
+
+            form_login:
+                login_path: security_login #le nom de la route dans securityController
+                check_path: security_login # même chemin pour 'afficher' le form que celui pour 'vérifier' le form
+
+            logout:
+                path: security_logout
+                target: event_list
 
             # activate different ways to authenticate
 
@@ -19,6 +42,8 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+
+    
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

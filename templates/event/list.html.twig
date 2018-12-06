@@ -18,7 +18,7 @@
     <div class="row">
         {% for event in events %}
             <div class="card col-12 col-sm-6" style="width: 18rem;">
-                <img class="card-img-top" src={{event.poster}} alt="BearsBeer image">
+                <img class="card-img-top" src={{asset(event.poster)}} alt="BearsBeer image">
                 <div class="card-body">
                     <h5 class="card-title">Titre : {{event.name}}</h5>
                     <p class="card-text">Description : {{event.content}}</p>
