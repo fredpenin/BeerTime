@@ -28,7 +28,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('event_add') }}">Ajout d'évenement</a>
-                        </li>            
+                        </li>
+
+                        {% if not app.user %}
+                        <li class="nav-item">
+                            <a href="{{ path('security_login') }}">Connexion /</a>
+                            <a href="{{ path('security_registration') }}">/ Inscription</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a href="{{ path('security_logout') }}">Déconnexion</a>
+                            <span class="nav-link">Utilisateur connecté : {{ app.user.username }}</span>
+                        </li>  
+                        {% endif %}      
                     </ul>
                     <!-- moteur de recherche -->
                     <form method="GET" action="{{ path('event_list') }}" class="form-inline my-2 my-lg-0">

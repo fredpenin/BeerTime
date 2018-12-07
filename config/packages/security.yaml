@@ -2,10 +2,9 @@ security:
     encoders:
         App\Entity\User:
             algorithm: bcrypt
+
+            
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-
-        
-
     providers:
         # Symfony\Component\Security\Core\User\User:  #à mettre si on utilise des users en dur, sans bdd
         in_memory: { memory: ~ }
