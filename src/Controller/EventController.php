@@ -1,15 +1,19 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Event;
+use App\Entity\Participation;
 
 use App\Service\EventService;
-use App\Entity\Event;
 use App\Form\AddEventFormType;
+use App\Form\EventJoinType;
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+//use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class EventController extends AbstractController
@@ -66,7 +70,7 @@ class EventController extends AbstractController
             // $em = $this->getDoctrine()->getManager();
             // $em->persist( $event );
             // $em->flush();            
-            //On met tout ça dans le service à la place :
+            // On met tout ça dans le service à la place :
             $EventService->add($event); //save de l'event
 
             return $this->redirectToRoute('event_list');
@@ -80,9 +84,44 @@ class EventController extends AbstractController
     /**
      * @Route("/event/{id}/join", name="event_join", requirements={"id"="\d+"})
      */
-    public function join(EventService $EventService)
+    public function join(Request $request, EventService $EventService, $id)
     {
-        return new Response("Rejoindre un évenement");
+        $participation = new Participation;
+        $form = $this->createForm(EventJoinType::class, $participation);
+        // var_dump($request);
+        // var_dump($EventService);
+        $form->handleRequest($request);
+
+        if ( $form->isValid() ){
+
+            $EventService->join($participation);
+
+
+        return $this->render('event/join.html.twig', [
+            'event' => $EventService->getOne($id)
+        ]);
+        
     }
  
 }
+
+// public function registration(Request $request, ObjectManager $om, UserPasswordEncoderInterface $encoder){
+
+//     $user = new User;
+//     $form = $this->createForm(RegistrationType::class, $user);
+
+//     $form->handleRequest($request);
+
+//     if($form->isSubmitted() && $form->isValid()){
+//         $hash = $encoder->encodePassword($user, $user->getPassword());//il vérifiera le type d'encodage de User dans le security.yaml, soit bcrypt
+
+//         $user->setPassword($hash);
+
+//         $om->persist($user);
+//         $om->flush();
+
+//         return $this->redirectToRoute('security_login');
+//     } 
+//     return $this->render('security\registration.html.twig',[
+//     'form' => $form->createView()
+//     ]);

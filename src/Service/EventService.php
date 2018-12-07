@@ -30,7 +30,7 @@ class EventService
         return $repo->find($id);
     }
 
-    // Recherche des évenements pas nom et par tri (date ou nom)
+    // Recherche des évenements par nom et par tri (date ou nom)
     public function search($name, $sort, $page){//$page reçoit le $queryPage
         $repo = $this->om->getRepository(Event::class);
         return $repo->search($name, $sort, $page);
@@ -66,6 +66,13 @@ class EventService
         $file->move('./data', $fileName);
 
         return $event->setPoster('data/' . $fileName);
+    }
+
+    //rejoindre un event
+    private function join($participation){
+        $eventRepo = $this->om->getRepository(Event::class);
+        $userRepo = $this->om->getRepository(User::class);
+        
     }
 
 }

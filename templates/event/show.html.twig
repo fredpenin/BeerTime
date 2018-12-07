@@ -10,6 +10,13 @@
 <p>Fin de fin : {{ event.endAt | date() }}</p>
 <p>Description : {{ event.content }}</p>
 <p>Prix : {{ event.price }}</p>
+1
+{# {{ dump(app.user) }} #}
+
+{% if app.user %}
+    <a href="{{ path('event_join', {id: event.id}) }}">S'inscrire à cet évenement</a>
+{% endif %} 
+
 
 
 

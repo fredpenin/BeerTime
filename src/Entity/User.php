@@ -117,7 +117,7 @@ class User implements UserInterface // permet de déclarer cette classe comme un
 
         return $this;
     }
-    //Requis pourUserInterface : Cf. https://api.symfony.com/3.4/Symfony/Component/Security/Core/User/UserInterface.html
+    //Requis pour UserInterface : Cf. https://api.symfony.com/3.4/Symfony/Component/Security/Core/User/UserInterface.html
     public function eraseCredentials(){}
 
     public function getSalt(){}
